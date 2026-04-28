@@ -1,4 +1,4 @@
-"""
+﻿"""
 Crypto DayTrading Bot - BTC/USD
 Strategy: RSI + Bollinger Bands + ATR-based position sizing
 Exchange: Alpaca Markets (Paper Trading)
@@ -13,7 +13,7 @@ import requests
 import pandas as pd
 import numpy as np
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+# â”€â”€ Logging â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── Config ────────────────────────────────────────────────────────────────────
+# â”€â”€ Config â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 API_KEY    = os.environ["ALPACA_API_KEY"]
 API_SECRET = os.environ["ALPACA_API_SECRET"]
 BASE_URL   = "https://paper-api.alpaca.markets"
@@ -45,7 +45,7 @@ HEADERS = {
 }
 
 
-# ── Alpaca helpers ────────────────────────────────────────────────────────────
+# â”€â”€ Alpaca helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def get_account():
     r = requests.get(f"{BASE_URL}/v2/account", headers=HEADERS, timeout=10)
@@ -119,7 +119,7 @@ def close_position(symbol: str):
     return r.json()
 
 
-# ── Indicators ────────────────────────────────────────────────────────────────
+# â”€â”€ Indicators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def compute_rsi(series: pd.Series, period: int = RSI_PERIOD) -> pd.Series:
     delta = series.diff()
@@ -143,7 +143,7 @@ def compute_atr(df: pd.DataFrame, period: int = 14) -> pd.Series:
     return tr.ewm(com=period - 1, min_periods=period).mean()
 
 
-# ── Signal logic ──────────────────────────────────────────────────────────────
+# â”€â”€ Signal logic â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def generate_signal(df: pd.DataFrame) -> str:
     """
@@ -171,7 +171,7 @@ def generate_signal(df: pd.DataFrame) -> str:
     return "hold"
 
 
-# ── Position sizing ───────────────────────────────────────────────────────────
+# â”€â”€ Position sizing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def calc_notional(equity: float, atr: float, price: float) -> float:
     """
@@ -185,7 +185,7 @@ def calc_notional(equity: float, atr: float, price: float) -> float:
     return round(min(sized, TRADE_BUDGET, equity * 0.95), 2)
 
 
-# ── Main loop ─────────────────────────────────────────────────────────────────
+# â”€â”€ Main loop â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 def run():
     log.info("=" * 60)
@@ -201,7 +201,7 @@ def run():
         log.warning("Equity too low ($%.2f). Stopping.", equity)
         return
 
-    # ── Fetch market data ──────────────────────────────────────────────────
+    # â”€â”€ Fetch market data â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     df = get_bars(SYMBOL)
     log.info("Fetched %d bars (last close=%.2f)", len(df), df["close"].iloc[-1])
 
@@ -209,12 +209,12 @@ def run():
         log.warning("Not enough bars (%d). Skipping.", len(df))
         return
 
-    # ── Indicators ─────────────────────────────────────────────────────────
+    # â”€â”€ Indicators â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     atr    = compute_atr(df).iloc[-1]
     signal = generate_signal(df)
     log.info("Signal -> %s  |  ATR=%.2f", signal.upper(), atr)
 
-    # ── Current position ───────────────────────────────────────────────────
+    # â”€â”€ Current position â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     position = get_position(SYMBOL_CLEAN)
     has_position = position is not None
     if has_position:
@@ -222,7 +222,7 @@ def run():
         unrpnl = float(position["unrealized_pl"])
         log.info("Position: qty=%.6f BTC  unrealized_PnL=$%.2f", qty, unrpnl)
 
-    # ── Execute ────────────────────────────────────────────────────────────
+    # â”€â”€ Execute â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
     if signal == "buy" and not has_position:
         notional = calc_notional(equity, atr, df["close"].iloc[-1])
         if cash >= notional and notional >= 1.0:
@@ -248,3 +248,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+
