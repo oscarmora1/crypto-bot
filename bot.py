@@ -1,4 +1,4 @@
-﻿"""
+"""
 Crypto DayTrading Bot - BTC/USD
 Strategy: RSI + Bollinger Bands + ATR-based position sizing
 Exchange: Alpaca Markets (Paper Trading)
